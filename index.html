@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AK Tutoring Co.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        body.light-mode {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+        .glassy-nav {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(17, 24, 39, 0.75);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.125);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        body.light-mode .glassy-nav {
+            background-color: rgba(224, 242, 254, 0.75);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .content-section {
+            padding-top: 6rem;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+        .content-section.active {
+            display: flex;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .container {
+            max-width: 800px;
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 50%;
+            height: 4px;
+            background-color: #6366f1;
+            border-radius: 9999px;
+            transition: background-color 0.3s ease;
+        }
+        body.light-mode .section-title::after {
+            background-color: #3b82f6;
+        }
+        .nav-link {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #9ca3af;
+        }
+        body.light-mode .nav-link:hover {
+            color: #3b82f6;
+        }
+        .section-content {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.3s ease, border 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        body.light-mode .section-content {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .section-content:hover {
+            transform: scale(1.02);
+        }
+        .resume-section .list-item {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        .resume-section .list-item-title {
+            font-weight: bold;
+            flex-shrink: 0;
+            min-width: 150px;
+        }
+        .contact-info a {
+            color: #9ca3af;
+            text-decoration: underline;
+        }
+        body.light-mode .contact-info a {
+            color: #1e293b;
+        }
+        .footer {
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        .footer a {
+            color: #6366f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer a:hover {
+            color: #3b82f6;
+        }
+        /* Modal Popup Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content-wrapper {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .modal-content {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        body.light-mode .modal-content {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Widget button styles */
+        .widget-button {
+            position: fixed;
+            bottom: 1.5rem;
+            width: 5rem;
+            height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            z-index: 90;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .widget-button:hover {
+            transform: scale(1.1);
+        }
+        #kamath-ai-button {
+            right: 1.5rem;
+            background-color: #6366f1;
+        }
+        body.light-mode #kamath-ai-button {
+            background-color: #3b82f6;
+        }
+        #promo-code-button {
+            left: 1.5rem;
+            background-color: #22c55e;
+        }
+        body.light-mode #promo-code-button {
+            background-color: #16a34a;
+        }
+
+        /* Widget pop-up styles */
+        .widget-pop-up {
+            position: fixed;
+            bottom: 1.5rem;
+            width: calc(100% - 3rem);
+            max-width: 28rem;
+            background-color: #1e293b;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            z-index: 95;
+            transform: translateY(150%);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.4s ease, opacity 0.4s ease, visibility 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+        body.light-mode .widget-pop-up {
+            background-color: #f1f5f9;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .widget-pop-up.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        #kamath-ai-widget {
+            right: 1.5rem;
+        }
+        #promo-code-widget {
+            left: 1.5rem;
+        }
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #334155;
+            margin-bottom: 1rem;
+        }
+        body.light-mode .widget-header {
+            border-color: #cbd5e1;
+        }
+        .chat-message-box {
+            background-color: #334155;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+        body.light-mode .chat-message-box {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+        .faq-button {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            padding: 0.75rem 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            color: #94a3b8;
+        }
+        body.light-mode .faq-button {
+            background-color: #cbd5e1;
+            border: 1px solid #94a3b8;
+            color: #1e293b;
+        }
+        .faq-button:hover {
+            background-color: #334155;
+            transform: scale(1.02);
+        }
+        body.light-mode .faq-button:hover {
+            background-color: #b9c1cb;
+        }
+        .try-again-button {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        body.light-mode .try-again-button {
+            background-color: #3b82f6;
+        }
+        .widget-content-area input, .widget-content-area select {
+            color: black;
+        }
+
+        .option-label {
+            display: block;
+            background: #334155;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .option-label:hover {
+            background: #475569;
+        }
+        body.light-mode .option-label {
+            background: #cbd5e1;
+            color: #1e293b;
+        }
+        body.light-mode .option-label:hover {
+            background: #94a3b8;
+        }
+        .option-input:checked + .option-label {
+            background: #6366f1;
+            color: white;
+        }
+        body.light-mode .option-input:checked + .option-label {
+            background: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 py-4 px-8 glassy-nav">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-xl font-bold nav-link" data-tab="home">AK Tutoring Co.</a>
+            <!-- Main navigation links always visible -->
+            <div class="flex space-x-8 items-center">
+                <a href="#" class="nav-link" data-tab="home">Home</a>
+                <a href="#" class="nav-link" data-tab="about">About</a>
+                <a href="#" class="nav-link" data-tab="resume">Tutor Resume</a>
+                <a href="#" class="nav-link" data-tab="pricing">Pricing</a>
+                <a href="#" class="nav-link" data-tab="contact">Contact Us</a>
+                <button id="mode-toggle" class="nav-link focus:outline-none">
+                    <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                    <svg id="sun-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Sections -->
+    <div id="content-container" class="container mx-auto px-4 mt-16">
+
+        <!-- Home Section -->
+        <section id="home" class="content-section flex items-center justify-center active">
+            <div class="section-content w-full">
+                <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Welcome to AK Tutoring Co.</h1>
+                <p class="text-lg md:text-xl text-gray-400">
+                    Every child has unique potential waiting to be unlocked. My mission is to provide personalized, one-on-one tutoring that goes beyond the standard classroom pace, helping each student build a strong foundation, strengthen school concepts, and explore new topics.
+                </p>
+            </div>
+            <footer class="footer">
+                <p>&copy; AK Tutoring LLC, All rights reserved to Aditya Kamath.</p>
+                <p><a href="#" class="terms-link">Terms and Conditions</a></p>
+            </footer>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="content-section flex items-center justify-center">
+            <div class="section-content w-full">
+                <h2 class="section-title text-gray-100">My Philosophy: Unlocking Individual Potential</h2>
+                <p class="text-lg text-gray-300">
+                    In today's classrooms, a one-size-fits-all approach can often hold students back. I believe in providing an individualized and diverse learning experience tailored to each student's personal needs. I currently offer tutoring in **Reading** and **Math**, but special inquiries can be made.
+                </p>
+                <p class="mt-4 text-lg text-gray-300">
+                    Unlike the "medium learning speed" of traditional schools, private tutoring allows for a custom pace. This one-on-one attention can significantly strengthen concepts taught in class and provide the opportunity for more learning than what is regularly taught. My goal is to empower students to reach their full potential and build a lifelong love for learning.
+                </p>
+            </div>
+            <footer class="footer">
+                <p>&copy; AK Tutoring LLC, All rights reserved to Aditya Kamath.</p>
+                <p><a href="#" class="terms-link">Terms and Conditions</a></p>
+            </footer>
+        </section>
+
+        <!-- Tutor Resume Section -->
+        <section id="resume" class="content-section flex items-center justify-center">
+            <div class="section-content w-full resume-section">
+                <h2 class="section-title text-gray-100">Tutor Resume</h2>
+                <div class="text-lg text-gray-300">
+                    <p class="font-bold text-xl mb-4">Adi Kamath</p>
+                    <hr class="my-4 border-gray-700" />
+                    <p class="font-bold text-lg mb-2">Extracurricular Skills:</p>
+                    <ul class="list-disc list-inside space-y-2 pl-4">
+                        <li>Experienced piano player (classes for 5 years)</li>
+                        <li>Intermediate chess player (5 years)</li>
+                        <li>Advanced basketball player (4 years)</li>
+                        <li>Semester-long course on Engineering and Design Modeling, passed with 95/100 and certification, with proficient understanding of LdCAD, and Whitebox</li>
+                        <li>Semester-long course on Media Production, passed with a 98/100 and certification, with proficient understanding of Adobe Photoshop, Adobe After Effects, WeVideo and Capcut</li>
+                        <li>Owns a growing and successful YouTube channel with 600+ subscribers.</li>
+                    </ul>
+                    <hr class="my-4 border-gray-700" />
+                    <p class="font-bold text-lg mb-2">Academic Skills:</p>
+                    <ul class="list-disc list-inside space-y-2 pl-4">
+                        <li>4.0 GPA overall</li>
+                        <li>A+ Grade in Algebra, Geometry, Geology, English/Vocab, American History, Computer Science, and Chemistry (All at 8th grade or below level).</li>
+                    </ul>
+                    <hr class="my-4 border-gray-700" />
+                    <p class="font-bold text-lg mb-2">Availability:</p>
+                    <p>Free for most timings, can have some issues if colliding with personal classes.</p>
+                    <hr class="my-4 border-gray-700" />
+                    <p class="font-bold text-lg mb-2">Restrictions:</p>
+                    <ul class="list-disc list-inside space-y-2 pl-4">
+                        <li><strong>Age:</strong> Only able to do tutor people 13 and under</li>
+                        <li><strong>Location:</strong> Only able to do jobs in surrounding area</li>
+                        <li><strong>Language:</strong> Only proficiently speaks two languages (American English and Konkani)</li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="footer">
+                <p>&copy; AK Tutoring LLC, All rights reserved to Aditya Kamath.</p>
+                <p><a href="#" class="terms-link">Terms and Conditions</a></p>
+            </footer>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="content-section flex items-center justify-center">
+            <div class="section-content w-full">
+                <h2 class="section-title text-gray-100">Pricing</h2>
+                <p class="text-lg text-gray-300">
+                    My standard tutoring rate is **$20 per hour**. The first trial lesson is always free.
+                </p>
+                <p class="mt-4 text-lg text-gray-300">
+                    However, this can be subject to change based on special circumstances, such as a student's specific needs, the complexity of the subject, or travel distance. I can discuss a custom rate during our initial consultation to ensure it works for everyone.
+                </p>
+            </div>
+            <footer class="footer">
+                <p>&copy; AK Tutoring LLC, All rights reserved to Aditya Kamath.</p>
+                <p><a href="#" class="terms-link">Terms and Conditions</a></p>
+            </footer>
+        </section>
+
+        <!-- Contact Us Section -->
+        <section id="contact" class="content-section flex items-center justify-center">
+            <div class="section-content w-full contact-info">
+                <h2 class="section-title text-gray-100">Contact Us</h2>
+                <p class="text-lg text-gray-300">
+                    Requests for tutoring can take up to 72 hours to be responded to.
+                </p>
+                <p class="text-lg text-gray-300 mt-4">
+                    To Contact for Business Inquiries:
+                </p>
+                <div class="mt-4 text-gray-300">
+                    <p class="font-bold">Emails:</p>
+                    <ul class="list-disc list-inside pl-4">
+                        <li><a href="mailto:business.adikamath@gmail.com">business.adikamath@gmail.com</a> for business</li>
+                        <li><a href="mailto:adikamath14@outlook.com">adikamath14@outlook.com</a> (personal)</li>
+                        <li><a href="mailto:adikamath14@gmail.com">adikamath14@gmail.com</a> (personal)</li>
+                    </ul>
+                </div>
+                <div class="mt-4 text-gray-300">
+                    <p class="font-bold">Phone:</p>
+                    <ul class="list-disc list-inside pl-4">
+                        <li>+1-425-283-3244 (Personal)</li>
+                        <li>+1-408-365-4726 (Parents)</li>
+                        <li>+1-858-523-8465 (Parents)</li>
+                    </ul>
+                    </ul>
+                </div>
+            </div>
+            <footer class="footer">
+                <p>&copy; AK Tutoring LLC, All rights reserved to Aditya Kamath.</p>
+                <p><a href="#" class="terms-link">Terms and Conditions</a></p>
+            </footer>
+        </section>
+    </div>
+
+    <!-- General Text Modal -->
+    <div id="text-modal" class="modal">
+        <div class="modal-content-wrapper">
+            <span class="close-btn">&times;</span>
+            <div id="modal-content-area" class="modal-content">
+                <!-- Content will be injected here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quiz-modal" class="modal">
+        <div class="modal-content-wrapper">
+            <span class="close-btn">&times;</span>
+            <div id="quiz-modal-content" class="modal-content">
+                <!-- Quiz content will be injected here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- KamathAI Widget Button -->
+    <button id="kamath-ai-button" class="widget-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-gemini">
+            <path d="M12 2L2 12L12 22L22 12L12 2Z" fill="currentColor" stroke="none" />
+            <path d="M12 2L12 12L22 12" />
+        </svg>
+    </button>
+
+    <!-- Promo Code Widget Button -->
+    <button id="promo-code-button" class="widget-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-gift">
+            <polyline points="20 12 20 22 4 22 4 12" />
+            <rect x="2" y="7" width="20" height="5" />
+            <line x1="12" y1="22" x2="12" y2="7" />
+            <path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z" />
+            <path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z" />
+        </svg>
+    </button>
+
+    <!-- KamathAI Widget -->
+    <div id="kamath-ai-widget" class="widget-pop-up">
+        <div class="widget-header">
+            <h3 class="text-xl font-bold">KamathAI</h3>
+            <div class="flex items-center space-x-2">
+                <button id="kamath-ai-back" class="hidden text-sm text-gray-400">Back</button>
+                <button id="kamath-ai-close" class="text-xl text-gray-400">&times;</button>
+            </div>
+        </div>
+        <div id="kamath-ai-content" class="flex flex-col flex-grow widget-content-area">
+            <div id="initial-ai-content" class="flex flex-col flex-grow">
+                <div class="chat-message-box">
+                    Hello! I'm KamathAI. I can answer your questions about AK Tutoring Co.
+                </div>
+                <div id="faq-list" class="flex-grow overflow-y-auto space-y-2 p-2 rounded-lg">
+                    <h4 class="font-semibold text-sm mb-2 text-gray-400">Popular Questions:</h4>
+                    <button class="faq-button w-full text-left" data-question="pricing">What is your tutoring pricing?</button>
+                    <button class="faq-button w-full text-left" data-question="subjects">What subjects do you tutor?</button>
+                    <button class="faq-button w-full text-left" data-question="contact">How can I contact you?</button>
+                    <button class="faq-button w-full text-left" data-question="qualifications">What are your qualifications?</button>
+                    <button class="faq-button w-full text-left" data-question="age">Is there an age limit for students?</button>
+                    <button class="faq-button w-full text-left" data-question="availability">What are your tutoring hours?</button>
+                </div>
+            </div>
+            <div id="dynamic-ai-content" class="hidden"></div>
+        </div>
+    </div>
+
+    <!-- Promo Code Widget -->
+    <div id="promo-code-widget" class="widget-pop-up">
+        <div class="widget-header">
+            <h3 class="text-xl font-bold">Promo Codes</h3>
+            <button id="promo-code-close" class="text-xl text-gray-400">&times;</button>
+        </div>
+        <div id="promo-code-content" class="flex flex-col flex-grow widget-content-area">
+            <div id="promo-code-input-area">
+                <div class="chat-message-box">
+                    Welcome! Enter your 6-digit promo code below.
+                </div>
+                <div id="promo-code-box" class="flex gap-2 items-center">
+                    <input type="text" id="promo-code-input" maxlength="6" class="flex-grow w-full text-black px-4 py-2 border rounded-md" placeholder="Enter code here..." oninput="this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')">
+                    <button id="promo-code-submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Submit</button>
+                </div>
+            </div>
+            <div id="promo-code-dynamic-content" class="hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const sectionContents = document.querySelectorAll('.section-content');
+        const modeToggle = document.getElementById('mode-toggle');
+        const moonIcon = document.getElementById('moon-icon');
+        const sunIcon = document.getElementById('sun-icon');
+        const textModal = document.getElementById('text-modal');
+        const textModalContentArea = document.getElementById('modal-content-area');
+        const closeBtns = document.querySelectorAll('.close-btn');
+        const termsLinks = document.querySelectorAll('.terms-link');
+        const quizModal = document.getElementById('quiz-modal');
+        const quizModalContent = document.getElementById('quiz-modal-content');
+
+        // --- Tab switching logic ---
+        function showTab(tabId) {
+            contentSections.forEach(section => {
+                if (section.id === tabId) {
+                    section.classList.add('active');
+                    section.style.display = 'flex';
+                } else {
+                    section.classList.remove('active');
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+                showTab(tabId);
+            });
+        });
+
+        // --- Light/Dark mode toggle ---
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            moonIcon.classList.toggle('hidden');
+            sunIcon.classList.toggle('hidden');
+        });
+
+        // --- General Modal Popup Logic ---
+        const termsAndConditionsContent = `
+            <h2 class="section-title text-gray-100">Terms and Conditions</h2>
+            <p class="text-lg text-gray-300 mb-4">
+                Welcome to AK Tutoring Co. By engaging my tutoring services, you agree to the following terms and conditions. These terms are designed to ensure a smooth and productive tutoring experience for all parties involved.
+            </p>
+            <p class="text-lg text-gray-300 mb-4">
+                **Tutoring Services:** I, Aditya Kamath, will provide one-on-one tutoring sessions in the subjects agreed upon during our initial consultation. While I strive to help every student reach their academic potential, I do not guarantee specific grades or outcomes. Tutoring is a collaborative process that requires active participation from the student.
+            </p>
+            <p class="text-lg text-gray-300 mb-4">
+                **Payment:** Payment for services is due within 24 hours of receiving a bill for the completed session. If payment is not received within this timeframe, a late fee of **$5** will be applied to the outstanding balance.
+            </p>
+            <p class="text-lg text-gray-300 mb-4">
+                **Cancellations:** If you need to cancel a scheduled session, please notify me at least 24 hours in advance. Cancellations made with less than 24 hours' notice may be subject to a cancellation fee equivalent to the full session rate.
+            </p>
+            <p class="text-lg text-gray-300 mb-4">
+                **Confidentiality:** All personal and academic information shared during tutoring sessions will be kept confidential. I will not share any student information with third parties without express permission from a parent or legal guardian.
+            </p>
+            <p class="text-lg text-gray-300">
+                **Liability:** I am not responsible for any personal injury or property damage that may occur during in-person tutoring sessions. By agreeing to these terms, you release me from any and all liability for such incidents.
+            </p>
+        `;
+
+        sectionContents.forEach(content => {
+            content.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const clonedContent = this.cloneNode(true);
+                clonedContent.classList.remove('cursor-pointer', 'hover:scale-102');
+                clonedContent.style.transform = 'none';
+
+                const footer = clonedContent.querySelector('.footer');
+                if (footer) {
+                    footer.remove();
+                }
+
+                textModalContentArea.innerHTML = '';
+                textModalContentArea.appendChild(clonedContent);
+                textModal.style.display = 'flex';
+                document.body.classList.add('modal-open');
+            });
+        });
+
+        termsLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                textModalContentArea.innerHTML = termsAndConditionsContent;
+                textModal.style.display = 'flex';
+                document.body.classList.add('modal-open');
+            });
+        });
+
+        closeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.modal').style.display = 'none';
+                document.body.classList.remove('modal-open');
+            });
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === textModal) {
+                textModal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+            if (event.target === quizModal) {
+                quizModal.style.display = 'none';
+                document.body.classList.remove('modal-open');
+            }
+        });
+
+        showTab('home');
+
+        // --- KamathAI Widget Logic ---
+        const kamathAiButton = document.getElementById('kamath-ai-button');
+        const kamathAiWidget = document.getElementById('kamath-ai-widget');
+        const kamathAiClose = document.getElementById('kamath-ai-close');
+        const kamathAiBack = document.getElementById('kamath-ai-back');
+        const faqButtons = document.querySelectorAll('.faq-button');
+        const initialAiContent = document.getElementById('initial-ai-content');
+        const dynamicAiContent = document.getElementById('dynamic-ai-content');
+
+        const faqs = {
+            "pricing": "My standard tutoring rate is $20 per hour. The first trial lesson is always free.",
+            "subjects": "I currently tutor in Reading and Math, but special inquiries can be made for other subjects.",
+            "contact": "You can find my contact information on the Contact Us page, including my emails and phone numbers.",
+            "qualifications": "I have a 4.0 GPA and have taken various courses. You can see my full resume on the Tutor Resume tab.",
+            "age": "Yes, I am only able to tutor students who are 13 and under.",
+            "availability": "I am generally free for most timings. Please contact me to discuss specific availability."
+        };
+
+        kamathAiButton.addEventListener('click', () => {
+            kamathAiWidget.classList.toggle('active');
+        });
+        kamathAiClose.addEventListener('click', () => {
+            kamathAiWidget.classList.remove('active');
+            showInitialAiContent();
+        });
+
+        faqButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const question = button.dataset.question;
+                const answer = faqs[question];
+                dynamicAiContent.innerHTML = `
+                    <div class="chat-message-box">
+                        <h4 class="font-bold">Q: ${button.textContent}</h4>
+                        <p class="mt-2">A: ${answer}</p>
+                    </div>
+                `;
+                initialAiContent.classList.add('hidden');
+                dynamicAiContent.classList.remove('hidden');
+                kamathAiBack.classList.remove('hidden');
+            });
+        });
+
+        kamathAiBack.addEventListener('click', () => {
+            showInitialAiContent();
+        });
+
+        function showInitialAiContent() {
+            dynamicAiContent.innerHTML = '';
+            dynamicAiContent.classList.add('hidden');
+            initialAiContent.classList.remove('hidden');
+            kamathAiBack.classList.add('hidden');
+        }
+
+        // --- Promo Code Widget Logic ---
+        const promoCodeButton = document.getElementById('promo-code-button');
+        const promoCodeWidget = document.getElementById('promo-code-widget');
+        const promoCodeClose = document.getElementById('promo-code-close');
+        const promoCodeInput = document.getElementById('promo-code-input');
+        const promoCodeSubmit = document.getElementById('promo-code-submit');
+        const promoCodeInputArea = document.getElementById('promo-code-input-area');
+        const promoCodeDynamicContent = document.getElementById('promo-code-dynamic-content');
+
+        // Helper function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const mathQuizQuestions = [
+            {
+                q: "If $3x + 5 = 20$, what is the value of $x$?",
+                correctAnswer: "5",
+                options: ["5", "15", "4", "7", "3"]
+            },
+            {
+                q: "A triangle has a base of $12$ cm and a height of $8$ cm. What is its area?",
+                correctAnswer: "48 cm^2",
+                options: ["48 cm^2", "96 cm^2", "20 cm^2", "40 cm^2", "36 cm^2"]
+            },
+            {
+                q: "What is $25\%$ of $80$?",
+                correctAnswer: "20",
+                options: ["20", "200", "25", "4", "10"]
+            },
+            {
+                q: "What is the equivalent decimal of the fraction $3/8$?",
+                correctAnswer: "0.375",
+                options: ["0.375", "0.38", "0.25", "0.625", "0.75"]
+            },
+            {
+                q: "Simplify the expression: $(2^3)^2$.",
+                correctAnswer: "64",
+                options: ["64", "12", "8", "32", "16"]
+            },
+            {
+                q: "A car travels at an average speed of $50$ mph. How long will it take to travel $125$ miles?",
+                correctAnswer: "2.5 hours",
+                options: ["2.5 hours", "2 hours", "1.5 hours", "3 hours", "2.25 hours"]
+            },
+            {
+                q: "A rectangle has a length of $10$ meters and a width of $6$ meters. What is its perimeter?",
+                correctAnswer: "32 meters",
+                options: ["32 meters", "60 meters", "16 meters", "22 meters", "36 meters"]
+            },
+            {
+                q: "If $5y - 8 = 17$, what is the value of $y$?",
+                correctAnswer: "5",
+                options: ["5", "25", "3", "4", "6"]
+            },
+            {
+                q: "What is $1/4 + 1/2$?",
+                correctAnswer: "3/4",
+                options: ["3/4", "2/6", "1/8", "1/6", "2/4"]
+            },
+            {
+                q: "What is the next number in the sequence: $2, 4, 8, 16, ...$?",
+                correctAnswer: "32",
+                options: ["32", "20", "18", "24", "64"]
+            },
+            {
+                q: "Solve for $z$: $4z - 1 = 15$.",
+                correctAnswer: "4",
+                options: ["4", "16", "3", "5", "6"]
+            },
+            {
+                q: "What is the area of a circle with a radius of $5$ cm? Use $\pi \approx 3.14$.",
+                correctAnswer: "78.5 cm^2",
+                options: ["78.5 cm^2", "31.4 cm^2", "15.7 cm^2", "25 cm^2", "10 cm^2"]
+            },
+            {
+                q: "A store offers a $10\%$ discount. If an item is originally priced at $50, what is the new price?",
+                correctAnswer: "45",
+                options: ["45", "40", "5", "55", "30"]
+            },
+            {
+                q: "What is the greatest common divisor of $18$ and $24$?",
+                correctAnswer: "6",
+                options: ["6", "3", "12", "18", "2"]
+            },
+            {
+                q: "If a train travels at $60$ mph, how far does it travel in $30$ minutes?",
+                correctAnswer: "30 miles",
+                options: ["30 miles", "60 miles", "120 miles", "1.2 miles", "1.5 miles"]
+            },
+            {
+                q: "What is the volume of a cube with a side length of $4$ cm?",
+                correctAnswer: "64 cm^3",
+                options: ["64 cm^3", "16 cm^3", "48 cm^3", "32 cm^3", "12 cm^3"]
+            },
+            {
+                q: "If a number is multiplied by $3$ and then $5$ is subtracted, the result is $19$. What is the number?",
+                correctAnswer: "8",
+                options: ["8", "12", "6", "5", "9"]
+            },
+            {
+                q: "What is the square root of $144$?",
+                correctAnswer: "12",
+                options: ["12", "14.4", "72", "14", "16"]
+            },
+            {
+                q: "A recipe calls for $2$ cups of flour for every $3$ cups of sugar. If you use $6$ cups of flour, how much sugar do you need?",
+                correctAnswer: "9 cups",
+                options: ["9 cups", "18 cups", "6 cups", "3 cups", "12 cups"]
+            },
+            {
+                q: "Solve for $a$: $12 / a = 3$.",
+                correctAnswer: "4",
+                options: ["4", "36", "15", "9", "3"]
+            }
+        ];
+
+        let userAnswers = {};
+        let currentQuestionIndex = 0;
+
+        promoCodeButton.addEventListener('click', () => {
+            promoCodeWidget.classList.toggle('active');
+        });
+        promoCodeClose.addEventListener('click', () => {
+            promoCodeWidget.classList.remove('active');
+            showInitialPromoContent();
+        });
+
+        promoCodeSubmit.addEventListener('click', () => {
+            const code = promoCodeInput.value.toUpperCase();
+            if (code === 'TRIALS') {
+                showModalMessage('Congrats!', 'You have won a free trial class.', 'Please screenshot this page and add it to your inquiry when you ask for a tutor.');
+            } else if (code === 'PENCIL') {
+                showTutorEntryForm();
+            } else {
+                showModalMessage('Invalid Promo Code', 'The code you entered is not valid. Please try again.', '');
+            }
+        });
+
+        function showTutorEntryForm() {
+            promoCodeInputArea.classList.add('hidden');
+            promoCodeDynamicContent.classList.remove('hidden');
+            promoCodeDynamicContent.innerHTML = `
+                <div class="chat-message-box">
+                    <h4 class="font-bold">Tutor Application</h4>
+                    <form id="tutor-entry-form" class="space-y-4 mt-4">
+                        <div>
+                            <label for="name-input" class="block text-gray-300">Your Full Name:</label>
+                            <input type="text" id="name-input" class="w-full text-black px-4 py-2 border rounded-md" required>
+                        </div>
+                        <div>
+                            <label for="grade-input" class="block text-gray-300">Current Grade Level (e.g., 7):</label>
+                            <input type="number" id="grade-input" class="w-full text-black px-4 py-2 border rounded-md" min="1" max="12" required>
+                        </div>
+                        <button type="submit" class="bg-indigo-500 text-white px-6 py-2 rounded-lg w-full">Continue</button>
+                    </form>
+                </div>
+            `;
+            document.getElementById('tutor-entry-form').addEventListener('submit', handleTutorEntry);
+        }
+
+        function handleTutorEntry(e) {
+            e.preventDefault();
+            const name = document.getElementById('name-input').value.toLowerCase();
+            const grade = parseInt(document.getElementById('grade-input').value);
+
+            if (name === 'bob') {
+                showModalMessage('Sorry', 'You cannot be a tutor.');
+            } else if (grade < 7) {
+                showModalMessage('Sorry', 'You are too young to be a tutor.', 'You must be in 7th grade or higher to apply.');
+            } else {
+                startMathQuiz();
+            }
+        }
+
+        function startMathQuiz() {
+            userAnswers = {};
+            currentQuestionIndex = 0;
+            promoCodeWidget.classList.remove('active');
+            showQuizModal();
+        }
+
+        function showQuizModal() {
+            quizModal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            if (currentQuestionIndex < mathQuizQuestions.length) {
+                const q = mathQuizQuestions[currentQuestionIndex];
+                const buttonText = currentQuestionIndex === mathQuizQuestions.length - 1 ? 'Submit Answers' : 'Next';
+                const prevButtonHtml = currentQuestionIndex > 0 ? `<button id="quiz-prev-btn" class="bg-gray-500 text-white px-6 py-2 rounded-lg flex-grow">Previous</button>` : `<div class="flex-grow"></div>`;
+
+                // Shuffle options for each question
+                const shuffledOptions = shuffleArray([...q.options]);
+
+                let optionsHtml = '';
+                shuffledOptions.forEach((option, index) => {
+                    const isChecked = userAnswers[currentQuestionIndex] === option;
+                    optionsHtml += `
+                        <div>
+                            <input type="radio" id="option-${index}" name="quiz-option" value="${option}" class="hidden option-input" ${isChecked ? 'checked' : ''}>
+                            <label for="option-${index}" class="option-label">${option}</label>
+                        </div>
+                    `;
+                });
+
+                quizModalContent.innerHTML = `
+                    <div class="text-center mb-4">
+                        <h4 class="font-bold text-lg text-white">Tutor Qualification Test (8th Grade Math)</h4>
+                        <p class="text-sm text-gray-400">Question ${currentQuestionIndex + 1} of ${mathQuizQuestions.length}</p>
+                    </div>
+                    <form id="quiz-form" class="space-y-4">
+                        <div class="p-4 bg-gray-800 rounded-lg">
+                            <label class="block text-gray-300 mb-2">${q.q}</label>
+                            ${optionsHtml}
+                        </div>
+                        <div class="flex justify-between gap-4">
+                            ${prevButtonHtml}
+                            <button type="submit" id="quiz-next-btn" class="bg-indigo-500 text-white px-6 py-2 rounded-lg flex-grow">
+                                ${buttonText}
+                            </button>
+                        </div>
+                    </form>
+                `;
+
+                const form = document.getElementById('quiz-form');
+                form.addEventListener('submit', handleNextQuestion);
+                
+                if (currentQuestionIndex > 0) {
+                    document.getElementById('quiz-prev-btn').addEventListener('click', handlePreviousQuestion);
+                }
+            }
+        }
+
+        function handleNextQuestion(e) {
+            e.preventDefault();
+            const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = selectedOption.value;
+                if (currentQuestionIndex === mathQuizQuestions.length - 1) {
+                    submitQuiz();
+                } else {
+                    currentQuestionIndex++;
+                    renderQuestion();
+                }
+            }
+        }
+
+        function handlePreviousQuestion(e) {
+            e.preventDefault();
+            const selectedOption = document.querySelector('input[name="quiz-option"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = selectedOption.value;
+            }
+            currentQuestionIndex--;
+            renderQuestion();
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            mathQuizQuestions.forEach((q, index) => {
+                if (userAnswers[index] === q.correctAnswer) {
+                    score++;
+                }
+            });
+            showQuizResult(score);
+        }
+        
+        function showQuizResult(score) {
+            let resultMessage = '';
+            let subtitle = '';
+
+            if (score >= 18) {
+                resultMessage = `Congratulations! You got ${score} out of ${mathQuizQuestions.length} right.`;
+                subtitle = 'You are qualified to teach 8th grade and under.';
+            } else if (score >= 16) {
+                resultMessage = `Great Job! You got ${score} out of ${mathQuizQuestions.length} right.`;
+                subtitle = 'You are qualified to teach 7th grade and under.';
+            } else if (score >= 12) {
+                resultMessage = `Good Effort! You got ${score} out of ${mathQuizQuestions.length} right.`;
+                subtitle = 'You are qualified to teach 6th grade and under.';
+            } else {
+                resultMessage = `Sorry! You got ${score} out of ${mathQuizQuestions.length} right.`;
+                subtitle = 'You did not qualify to be a tutor at this time.';
+            }
+
+            const bodyText = (score >= 12)
+                ? 'Please send an email to me with a screenshot of your score to continue the process.'
+                : 'Please try again if you would like to re-apply.';
+
+            quizModalContent.innerHTML = `
+                <div class="text-center">
+                    <h4 class="font-bold text-lg text-green-400">${resultMessage}</h4>
+                    <p class="mt-2 text-xl">${subtitle}</p>
+                    <p class="mt-4 text-sm text-gray-400">${bodyText}</p>
+                    ${score < 12 ? `<button onclick="startMathQuiz()" class="try-again-button">Try Again</button>` : `<button onclick="closeQuizModal()" class="try-again-button">Close</button>`}
+                </div>
+            `;
+        }
+
+        function showModalMessage(title, message, subtitle = '') {
+            promoCodeInputArea.classList.add('hidden');
+            promoCodeDynamicContent.classList.remove('hidden');
+            promoCodeDynamicContent.innerHTML = `
+                <div class="chat-message-box text-center">
+                    <h4 class="font-bold text-lg text-green-400">${title}</h4>
+                    <p class="mt-2 text-xl">${message}</p>
+                    ${subtitle ? `<p class="mt-4 text-sm text-gray-400">${subtitle}</p>` : ''}
+                    <button onclick="showInitialPromoContent()" class="try-again-button">Close</button>
+                </div>
+            `;
+        }
+
+        function showInitialPromoContent() {
+            promoCodeDynamicContent.innerHTML = '';
+            promoCodeDynamicContent.classList.add('hidden');
+            promoCodeInputArea.classList.remove('hidden');
+            promoCodeInput.value = '';
+        }
+
+        function closeQuizModal() {
+            quizModal.style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>
