@@ -120,7 +120,7 @@
 </head>
 <body class="antialiased">
 
-    <!-- VERIFICATION SCREEN. -->
+    <!-- VERIFICATION SCREEN -->
     <div id="verify-screen" class="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden transition-opacity duration-1000">
         <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-600/20 rounded-full blur-[100px] animate-pulse-slow"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 2s;"></div>
@@ -213,14 +213,15 @@
                         Youth-Led Excellence
                     </h1>
                     <p class="text-xl md:text-2xl text-blue-100/90 max-w-4xl mx-auto leading-relaxed mb-10 font-light">
-                        Eastside Scholars is a student-driven initiative committed to academic empowerment through peer mentorship. Our tutoring programs are completely free of charge.
+                        Eastside Scholars is a student-driven initiative committed to academic empowerment through peer mentorship. Our comprehensive tutoring programs are completely free of charge.
                     </p>
                     <div class="flex justify-center gap-6 flex-wrap">
-                        <button onclick="showSection('subjects')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-full shadow-xl shadow-blue-500/20 transition transform hover:scale-105">
-                            Our Subjects
+                        <button onclick="openApplication()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-full shadow-xl shadow-blue-500/40 transition transform hover:scale-105 flex items-center gap-3">
+                            <i class="fas fa-file-signature"></i>
+                            Apply Now
                         </button>
-                        <button onclick="showSection('contact')" class="glass-panel hover:bg-white/10 text-white font-bold py-4 px-10 rounded-full transition transform hover:scale-105 border border-white/20">
-                            Join Us Today
+                        <button onclick="showSection('subjects')" class="glass-panel hover:bg-white/10 text-white font-bold py-4 px-10 rounded-full transition transform hover:scale-105 border border-white/20">
+                            Our Subjects
                         </button>
                     </div>
                 </div>
@@ -244,7 +245,7 @@
                                     <div class="text-center md:text-left">
                                         <h3 class="text-2xl font-bold text-white mb-2">1. Initial Inquiry</h3>
                                         <p class="text-blue-100/70 leading-relaxed">
-                                            Begin by submitting a formal expression of interest via email. Please include your preferred method of contact so our team can coordinate a timely follow-up.
+                                            Begin by submitting a formal expression of interest via email or our application portal. Please include your preferred method of contact so our team can coordinate a timely follow-up.
                                         </p>
                                     </div>
                                 </div>
@@ -296,7 +297,7 @@
                     </div>
                     <div class="glass-panel p-8 rounded-3xl">
                         <h3 class="text-3xl font-bold text-white mb-1">Sandeep Kurma</h3>
-                        <p class="text-blue-400 font-bold mb-6 text-sm uppercase tracking-widest">Co-Founder & Side Hoe</p>
+                        <p class="text-blue-400 font-bold mb-6 text-sm uppercase tracking-widest">Co-Founder & Strategic Associate</p>
                         <p class="text-blue-100/90 leading-relaxed">Facilitates cross-departmental strategy and supports the scaling of our educational reach across the community.</p>
                     </div>
                     <div class="glass-panel p-8 rounded-3xl">
@@ -306,7 +307,7 @@
                     </div>
                     <div class="glass-panel p-8 rounded-3xl">
                         <h3 class="text-3xl font-bold text-white mb-1">Kush Billa</h3>
-                        <p class="text-blue-400 font-bold mb-6 text-sm uppercase tracking-widest">Co-Founder, CPO & CFO</p>
+                        <p class="text-blue-400 font-bold mb-6 text-sm uppercase tracking-widest">CPO & CFO</p>
                         <p class="text-blue-100/90 leading-relaxed">Defines the general direction of our educational products and manages internal financial sustainability.</p>
                     </div>
                 </div>
@@ -390,9 +391,18 @@
                 <div class="max-w-3xl mx-auto">
                     <div class="glass-panel p-10 rounded-3xl shadow-2xl">
                         <h2 class="text-4xl font-bold text-center mb-10">Get in Touch</h2>
+                        
+                        <!-- APPLY NOW BUTTON (CONTACT) -->
+                        <div class="mb-8">
+                            <button onclick="openApplication()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-2xl shadow-xl shadow-blue-500/30 transition transform hover:-translate-y-1 flex items-center justify-center gap-3 text-xl">
+                                <i class="fas fa-paper-plane"></i>
+                                Apply Now
+                            </button>
+                        </div>
+
                         <div class="space-y-4">
                             <div class="flex items-center gap-6 p-6 bg-white/5 rounded-2xl border border-white/5">
-                                <i class="fas fa-paper-plane text-2xl text-blue-400"></i>
+                                <i class="fas fa-envelope text-2xl text-blue-400"></i>
                                 <div>
                                     <p class="text-xs text-blue-400 font-bold uppercase tracking-widest">Email Inquiry</p>
                                     <a href="mailto:sammamishscholars@gmail.com" class="text-xl text-white font-medium hover:text-blue-300 transition">sammamishscholars@gmail.com</a>
@@ -403,35 +413,35 @@
                                 <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 opacity-60">
                                     <i class="fas fa-phone text-blue-400/50"></i>
                                     <div>
-                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Adi Kamath</p>
-                                        <p class="text-white/50 text-sm">(425)-283-3244</p>
+                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Admin 1</p>
+                                        <p class="text-white/50 text-sm">(000) 000-0000</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 opacity-60">
                                     <i class="fas fa-phone text-blue-400/50"></i>
                                     <div>
-                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Sesha Shreeram</p>
-                                        <p class="text-white/50 text-sm">(425)-961-3303</p>
+                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Admin 2</p>
+                                        <p class="text-white/50 text-sm">(000) 000-0000</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 opacity-60">
                                     <i class="fas fa-phone text-blue-400/50"></i>
                                     <div>
-                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Kush Billa</p>
-                                        <p class="text-white/50 text-sm">(425)-340-9576</p>
+                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Admin 3</p>
+                                        <p class="text-white/50 text-sm">(000) 000-0000</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 opacity-60">
                                     <i class="fas fa-phone text-blue-400/50"></i>
                                     <div>
-                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Sandeep Kurma</p>
-                                        <p class="text-white/50 text-sm">(425)-440-1263</p>
+                                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Admin 4</p>
+                                        <p class="text-white/50 text-sm">(000) 000-0000</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-10 p-6 bg-white/5 rounded-2xl text-center border-l-4 border-blue-500 border-t border-r border-b border-white/5">
-                            <p class="text-blue-200 italic">"Please contact us primarily via email to initiate services."</p>
+                            <p class="text-blue-200 italic text-sm">"Use the Application Portal for fastest enrollment processing."</p>
                         </div>
                     </div>
                 </div>
@@ -492,6 +502,12 @@
     </div>
 
     <script>
+        // FUNCTION TO OPEN THE APPLICATION PORTAL
+        function openApplication() {
+            // Opens the applicationportal.html in a new window/tab
+            window.open('applicationportal.html', '_blank');
+        }
+
         function verifyUser() {
             const checkbox = document.getElementById('human-check');
             const verifyText = document.getElementById('verify-text');
@@ -537,12 +553,12 @@
 
         const faqs = [
             { q: "Is this really free?", a: "Yes. Every service we offer is 100% free of charge. No tuition, no fees." },
-            { q: "How do I sign up?", a: "Please send an email to sammamishscholars@gmail.com to start your enrollment." },
-            { q: "Who leads the sessions?", a: "High-achieving students in their respective subjects create lesson plans customized for each student" },
-            { q: "Where do lessons happen?", a: "Reading material are given to students along with assignments. If you need help, we can match you with a tutor who can offer assistance." },
+            { q: "How do I sign up?", a: "Click the 'Apply Now' button to fill out our application portal form!" },
+            { q: "Who leads the sessions?", a: "High-achieving high school students who excel in their respective subjects." },
+            { q: "Where do lessons happen?", a: "Sessions are conducted virtually via Zoom or Google Meet for convenience." },
             { q: "Which subjects do you cover?", a: "We offer Math, Reading, Science, History, Engineering, Law, Medicine, and Logic." },
-            { q: "Can I become a tutor?", a: "We're always looking for dedicated associates! Email us your resume and interests. This DOES count for NHS hours." },
-            { q: "How long are the sessions?", a: "We give resources along with assignments for the students to complete at their own pace." },
+            { q: "Can I become a tutor?", a: "We're always looking for dedicated mentors! Email us your resume and interests." },
+            { q: "How long are the sessions?", a: "Typically, sessions last 45-60 minutes, tailored to the student's needs." },
             { q: "Is there a curriculum?", a: "We follow the student's school curriculum while adding enrichment materials." },
             { q: "Do you offer test prep?", a: "Yes, we provide assistance for standardized tests and classroom exams." }
         ];
@@ -575,11 +591,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
